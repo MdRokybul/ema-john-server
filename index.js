@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 
 client.connect(err => {
   const products = client.db("emaJohnStore").collection("products");
+  const orders = client.db("emaJohnStore").collection("orders");
 
     app.post('/productsByKeys', (req, res) => {
         const productKeys = req.body;
@@ -44,10 +45,19 @@ client.connect(err => {
 
     app.post('/addProduct', (req, res) => {
         const product = req.body;
-        products.insertMany(product)
+        products.insertOne(product)
         .then(result => {
             console.log(result);
             res.send(result.insertedCount)
+        })
+    })
+
+    app.post('/addOrders', (req, res) => {
+        const order = req.body;
+        orders.insertOne(order)
+        .then(result => {
+            console.log(result);
+            res.send(result.insertedCount > 0)
         })
     })
 
