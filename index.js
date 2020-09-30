@@ -20,6 +20,14 @@ app.get('/', (req, res) => {
 client.connect(err => {
   const products = client.db("emaJohnStore").collection("products");
 
+    app.post('/productsByKeys', (req, res) => {
+        const productKeys = req.body;
+        products.find({key: {$in: productKeys}})
+        .toArray((err, documents) => {
+            res.send(documents)
+        })
+    })
+
     app.get('/products', (req, res) => {
         products.find({})
         .toArray((err, documents) => {
