@@ -19,6 +19,21 @@ app.get('/', (req, res) => {
 
 client.connect(err => {
   const products = client.db("emaJohnStore").collection("products");
+
+    app.get('/products', (req, res) => {
+        products.find({})
+        .toArray((err, documents) => {
+            res.send(documents);
+        })
+    })
+
+    app.get('/product/:key', (req, res) => {
+        products.find({key: req.params.key})
+        .toArray((err, documents) => {
+            res.send(documents[0]);
+        })
+    })
+
     app.post('/addProduct', (req, res) => {
         const product = req.body;
         products.insertMany(product)
@@ -27,6 +42,8 @@ client.connect(err => {
             res.send(result.insertedCount)
         })
     })
+
+    
   
 });
 
