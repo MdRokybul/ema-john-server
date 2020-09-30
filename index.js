@@ -21,9 +21,10 @@ client.connect(err => {
   const products = client.db("emaJohnStore").collection("products");
     app.post('/addProduct', (req, res) => {
         const product = req.body;
-        products.insertOne(product)
+        products.insertMany(product)
         .then(result => {
             console.log(result);
+            res.send(result.insertedCount)
         })
     })
   
